@@ -3,8 +3,7 @@ from django.http import HttpResponse
 
 def index(request):
     if request.method == 'POST':
-        print request.FILES.keys()
-        save_file(request.FILES['file'])
+        save_file(request.FILES['image'])
         return HttpResponse('Thanks for uploading the image')
     return HttpResponse('Something bad happened')
 
