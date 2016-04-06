@@ -2,11 +2,12 @@ from django.http import HttpResponse
 
 
 def index(request):
-	if request.method=='POST':
-		# form = ImageForm(request.POST, request.FILES)
-		save_file(request.FILES['image'])
-		return HttpResponse('Thanks for uploading the image')
-	return HttpResponse('Something bad happened')
+    if request.method == 'POST':
+        print request.FILES.keys()
+        save_file(request.FILES['file'])
+        return HttpResponse('Thanks for uploading the image')
+    return HttpResponse('Something bad happened')
+
 
 def save_file(file, path=''):
     ''' Little helper to save a file
