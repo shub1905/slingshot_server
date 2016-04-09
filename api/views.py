@@ -1,9 +1,21 @@
 from django.http import HttpResponse
-from tasks import mul
+from django.http import JsonResponse
+import tasks
+import uuid
+import pudb
+# import elasticsearchModel
 
-def index(request):
+def userid(request):
+    response_data = {}
+    response_data['uuid'] = uuid.uuid1()
+    response_data['message'] = 'This is the unique user id'
+    return JsonResponse(response_data)
+
+
+def upload(request):
     if request.method == 'POST':
         save_file(request.FILES['image'])
+
         return HttpResponse('Thanks for uploading the image')
     return HttpResponse('Something bad happened')
 
@@ -18,7 +30,8 @@ def save_file(file, path=''):
         fd.write(chunk)
     fd.close()
 
+
 def celery_test(request):
     for i in range(1000):
-        mul.apply_async((4,5))
+        tasks.mul.apply_async((4, 5))
     return HttpResponse('Celery Working')
