@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-
+import tasks
 
 def index(request):
     if request.method == 'POST':
@@ -17,3 +17,7 @@ def save_file(file, path=''):
     for chunk in file.chunks():
         fd.write(chunk)
     fd.close()
+
+def celery_test(request):
+    for i in range(1000):
+        tasks.mul.apply_async(4,5)
