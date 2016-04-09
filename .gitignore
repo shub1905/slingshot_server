@@ -64,3 +64,6 @@ target/
 
 # Mac Meta Files
 .DS_Store
+
+# Project Files
+images/

@@ -13,5 +13,10 @@ class ElasticSearch:
     def save_metadata(self, json_data):
         pass
 
+    def update_metadata(self, json_data):
+        pass
+
     def fetch_metadata(self, image_id):
         pass
+
+elastic = Elasticsearch()

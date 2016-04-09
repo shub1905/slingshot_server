@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
+from api.elasticsearchModel import elastic
 import tasks
 import uuid
-import pudb
-# import elasticsearchModel
+import os
 
 def userid(request):
     response_data = {}
@@ -14,24 +14,21 @@ def userid(request):
 
 def upload(request):
     if request.method == 'POST':
-        save_file(request.FILES['image'])
-
+        save_file(request.FILES['image'], request.POST.get('uuid', 'unnamed'))
+        elastic.save_metadata(request.POST)
+        tasks.process_image.apply_async((userid, ))
         return HttpResponse('Thanks for uploading the image')
     return HttpResponse('Something bad happened')
 
 
-def save_file(file, path=''):
+def save_file(file, uuid):
     ''' Little helper to save a file
     '''
-    MEDIA_ROOT = '.'
+    MEDIA_ROOT = 'images/'+uuid
+    if not os.path.exists(MEDIA_ROOT):
+        os.makedirs(MEDIA_ROOT)
     filename = file._get_name()
-    fd = open('%s/%s' % (MEDIA_ROOT, str(path) + str(filename)), 'wb')
+    fd = open('%s/%s' % (MEDIA_ROOT, str(filename)), 'wb')
     for chunk in file.chunks():
         fd.write(chunk)
     fd.close()
-
-
-def celery_test(request):
-    for i in range(1000):
-        tasks.mul.apply_async((4, 5))
-    return HttpResponse('Celery Working')

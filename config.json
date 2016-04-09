@@ -2,5 +2,11 @@
 	"elasticsearch" : {
 		"host" : "160.39.170.140",
 		"port" : 9200
+	},
+	{
+		"alchemy" : {
+			"api" : "http://gateway-a.watsonplatform.net/calls/image/ImageGetRankedImageFaceTags",
+			"apikey" : "abbd863b0860d4704ea3d763c445d470e580ee21"
+		}
 	}
 }
