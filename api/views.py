@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from api.elasticsearchModel import elastic
 import tasks
 import uuid
+import json
 import os
 
 def userid(request):
@@ -34,3 +35,9 @@ def save_file(file, uuid):
         fd.write(chunk)
     fd.close()
     tasks.process_image.apply_async((uuid, file_path))
+
+def fetch_group_info(request):
+    image_ids = json.loads(request.GET['image_ids'])
+    print image_ids
+    response = elastic.fetch_metadata(image_ids)
+    return JsonResponse(response)
