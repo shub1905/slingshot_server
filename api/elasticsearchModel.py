@@ -1,12 +1,17 @@
 import elasticsearch
+import json
+
 
 class ElasticSearch:
-	def create_connection(self):
-		self.connection = 1
-		pass
 
-	def save_metadata(self, json_data):
-		pass
+    def create_connection(self):
+        config_file = open('config.json', 'r')
+        config = json.loads(config_file.read())['elasticsearch']
+        self.connection = elasticsearch.Elasticsearch(host=config['host'], port=config['port'])
+        return self.connection
 
-	def fetch_metadata(self, image_id):
-		pass
+    def save_metadata(self, json_data):
+        pass
+
+    def fetch_metadata(self, image_id):
+        pass
