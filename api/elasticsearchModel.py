@@ -1,8 +1,12 @@
 import elasticsearch
 
 class ElasticSearch:
-	def save_metadata(json_data):
+	def create_connection(self):
+		self.connection = 1
 		pass
 
-	def fetch_metadata(image_id):
+	def save_metadata(self, json_data):
+		pass
+
+	def fetch_metadata(self, image_id):
 		pass
