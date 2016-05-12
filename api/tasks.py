@@ -10,36 +10,37 @@ al = AlchemyAPI()
 
 
 @shared_task
-def process_image(uuid, path):
-  print path
-  manage_image_size(path)
-  response = al.faceTagging('image', path)
-  if response['status'] == 'OK':
-    response['uuid'] = uuid
-    del(response['usage'])
-    elastic.save_metadata(response)
-    crop_faces.apply_async((response, path))
+def process_image(uuid, path, filename):
+    print path
+    manage_image_size(path)
+    response = al.faceTagging('image', path)
+    if response['status'] == 'OK':
+        response['uuid'] = uuid
+        response['name'] = filename
+        del(response['usage'])
+        response['files'] = crop_faces(response, path)
+        elastic.save_metadata(response)
 
 
-@shared_task
 def manage_image_size(path):
-  size = os.path.getsize(path)
-  if size > 10**6:
-    return False
+    size = os.path.getsize(path)
+    if size > 10**6:
+        return False
 
 
-@shared_task
 def crop_faces(response, path):
-  im = Image.open(path)
-  faces = []
-  for img_attr in response['imageFaces']:
-    att = [img_attr['positionX'], img_attr['positionY'], img_attr['height'],  img_attr['width']]
-    att = map(float, att)
-    box = (att[0], att[1], att[0]+att[2], att[1]+att[3])
-    region = im.crop(box)
-    faces.append(region)
+    im = Image.open(path)
+    faces = []
+    for img_attr in response['imageFaces']:
+        att = [img_attr['positionX'], img_attr['positionY'], img_attr['height'],  img_attr['width']]
+        att = map(float, att)
+        box = (att[0], att[1], att[0] + att[2], att[1] + att[3])
+        region = im.crop(box).resize((100, 100))
+        faces.append(region)
 
-  for i, f in enumerate(faces):
-    pth = '{}_{}.jpg'.format(path, i)
-    print pth
-    f.save(pth, "JPEG")
+    file_names = []
+    for i, f in enumerate(faces):
+        pth = '{}_{}.jpg'.format(path[:-4], i)
+        file_names.append(pth)
+        f.save(pth, "JPEG")
+    return file_names

@@ -19,10 +19,21 @@ class ElasticSearch:
         pass
 
     def fetch_metadata(self, image_ids):
-    	meta = []
-    	for img_id in image_ids:
-    		print img_id
-    		meta.append(self.conn.get(self.index, self.doc, img_id))
-    	return meta
+        meta = []
+        for img_id in image_ids:
+            print img_id
+            meta.append(self.conn.get(self.index, self.doc, img_id))
+        return meta
+
+    def fetch_all_images(self, uuid):
+        query = {
+            "query": {
+                "match_phrase": {
+                    "uuid": uuid
+                }
+            }
+        }
+        response = self.conn.search(self.index, body=query)
+        return response
 
 elastic = ElasticSearch()

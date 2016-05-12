@@ -34,7 +34,7 @@ def save_file(file, uuid):
     for chunk in file.chunks():
         fd.write(chunk)
     fd.close()
-    tasks.process_image.apply_async((uuid, file_path))
+    tasks.process_image.apply_async((uuid, file_path, filename))
 
 def fetch_group_info(request):
     image_ids = json.loads(request.GET['image_ids'])
