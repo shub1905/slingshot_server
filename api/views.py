@@ -17,7 +17,6 @@ def userid(request):
 def upload(request):
     if request.method == 'POST':
         save_file(request.FILES['image'], request.POST.get('uuid', 'unnamed'))
-        # elastic.save_metadata(request.POST)
         return HttpResponse('Thanks for uploading the image')
     return HttpResponse('Something bad happened')
 
@@ -37,8 +36,17 @@ def save_file(file, uuid):
     tasks.process_image.apply_async((uuid, file_path, filename))
 
 
-def fetch_group_info(request, uuid):
-    image_ids = json.loads(request.GET['image_ids'])
-    print image_ids
-    response = elastic.fetch_metadata(image_ids)
-    return JsonResponse(response)
+def process_group_info(request):
+    uuid = request.GET.get('uuid', None)
+    if not uuid:
+        return HttpResponse('Please send UUID')
+
+    tasks.cluster_pics.apply_async((uuid,))
+    return HttpResponse('Processing')
+
+
+def fetch_group_info(request):
+    uuid = request.GET.get('uuid', None)
+    if not uuid:
+        return HttpResponse('Please send UUID')
+    return JsonResponse(elastic.fetch_metadata(uuid))

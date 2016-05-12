@@ -1,4 +1,5 @@
 from elasticsearchModel import elastic
+from collections import defaultdict
 from clustering import cluster
 from PCA import pca_model
 from PIL import Image
@@ -22,7 +23,12 @@ def extract_X(uuid):
     X_red = pca_model.dim_reduction(X)
     return X_red, img_names
 
+
 def group_pics(uuid):
     X, names = extract_X(uuid)
     groups = cluster.cluster(X, names)
-    return groups
+    img_gps = defaultdict(list)
+    for gp in groups:
+        for img in groups[gp]:
+            img_gps[img].append(gp)
+    return img_gps

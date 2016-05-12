@@ -51,4 +51,4 @@ def crop_faces(response, path):
 @shared_task
 def cluster_pics(uuid):
     groups = group_pics(uuid)
-    print groups
+    elastic.save_group_info(groups, uuid)
