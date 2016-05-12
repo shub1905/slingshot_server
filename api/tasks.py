@@ -6,6 +6,7 @@ from alchemyapi import AlchemyAPI
 import os
 import json
 from PIL import Image
+from api.facegrouping import group_pics
 al = AlchemyAPI()
 
 
@@ -45,3 +46,9 @@ def crop_faces(response, path):
         file_names.append(pth)
         f.save(pth, "JPEG")
     return file_names
+
+
+@shared_task
+def cluster_pics(uuid):
+    groups = group_pics(uuid)
+    print groups

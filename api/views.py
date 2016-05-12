@@ -6,6 +6,7 @@ import uuid
 import json
 import os
 
+
 def userid(request):
     response_data = {}
     response_data['uuid'] = uuid.uuid1()
@@ -22,9 +23,8 @@ def upload(request):
 
 
 def save_file(file, uuid):
-    ''' Little helper to save a file
-    '''
-    MEDIA_ROOT = os.getcwd() + '/images/'+uuid
+    ''' Little helper to save a file'''
+    MEDIA_ROOT = os.getcwd() + '/images/' + uuid
     if not os.path.exists(MEDIA_ROOT):
         os.makedirs(MEDIA_ROOT)
     filename = file._get_name()
@@ -36,7 +36,8 @@ def save_file(file, uuid):
     fd.close()
     tasks.process_image.apply_async((uuid, file_path, filename))
 
-def fetch_group_info(request):
+
+def fetch_group_info(request, uuid):
     image_ids = json.loads(request.GET['image_ids'])
     print image_ids
     response = elastic.fetch_metadata(image_ids)
