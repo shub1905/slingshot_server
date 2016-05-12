@@ -12,3 +12,6 @@ class PCA:
 		self.fit(X)
 		red_X = numpy.dot(self.pca.components_, X.T)
 		return red_X.T
+
+
+pca = PCA()
