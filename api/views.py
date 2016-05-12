@@ -16,7 +16,7 @@ def userid(request):
 def upload(request):
     if request.method == 'POST':
         save_file(request.FILES['image'], request.POST.get('uuid', 'unnamed'))
-        elastic.save_metadata(request.POST)
+        # elastic.save_metadata(request.POST)
         return HttpResponse('Thanks for uploading the image')
     return HttpResponse('Something bad happened')
 
@@ -24,7 +24,7 @@ def upload(request):
 def save_file(file, uuid):
     ''' Little helper to save a file
     '''
-    MEDIA_ROOT = 'images/'+uuid
+    MEDIA_ROOT = os.getcwd() + '/images/'+uuid
     if not os.path.exists(MEDIA_ROOT):
         os.makedirs(MEDIA_ROOT)
     filename = file._get_name()

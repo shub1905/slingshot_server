@@ -1,6 +1,6 @@
 {
 	"elasticsearch" : {
-		"host" : "160.39.170.140",
+		"host" : "127.0.0.1",
 		"port" : 9200,
 		"index" : "image_data",
 		"doc" : "metadata"
