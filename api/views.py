@@ -39,6 +39,17 @@ def save_file(file, uuid):
     tasks.process_image.apply_async((uuid, file_path, filename))
 
 
+def list_images(request):
+    MEDIA_ROOT = os.getcwd() + '/images/unnamed'
+    if not os.path.exists(MEDIA_ROOT):
+        os.makedirs(MEDIA_ROOT)
+    images = [os.path.join('../../images/unnamed/',i) for i in os.listdir(MEDIA_ROOT)]
+    context = {"images":images}
+    return render(request,'api/images.html',context)
+
+
+
+
 def process_group_info(request):
     uuid = request.GET.get('uuid', None)
     if not uuid:

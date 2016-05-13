@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'process/$', views.process_group_info, name='process_group_info'),
     url(r'fetch/$', views.fetch_group_info, name='fetch_group_info'),
     url(r'upload2/$', views.home, name='imageupload'),
-
+    url(r'allimages/$', views.list_images, name='listimages'),
 ]
