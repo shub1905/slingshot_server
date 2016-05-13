@@ -129,7 +129,8 @@ def search(request):
             pass
         print tag, type(tag)
         images = elastic.fetch_metadata_group(uuid, tag)
-        return render(request, 'api/index.html', {'images': images, "images_upload": []})
+        groups = elastic.fetch_group_data(uuid)
+        return render(request, 'api/index.html', {'images': images, "images_upload": []},'groups': groups)
     else:
         return HttpResponse('Something bad happened')
 
