@@ -11,8 +11,7 @@ class ElasticSearch:
         self.index = config['index']
         self.index_group = config['index_group']
         self.doc = config['doc']
-        self.conn = elasticsearch.Elasticsearch(
-            host=config['host'], port=config['port'])
+        self.conn = elasticsearch.Elasticsearch(config['host'])
 
     def save_metadata(self, json_data):
         print self.conn.index(self.index, self.doc, json_data)
