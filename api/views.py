@@ -114,7 +114,6 @@ def index(request):
     groups = elastic.fetch_group_data(uuid)
 
     context = {"images": images, "images_upload": images_upload, 'groups': groups}
-    print context
     return render(request, 'api/index.html', context)
 
 
@@ -130,17 +129,18 @@ def search(request):
         print tag, type(tag)
         images = elastic.fetch_metadata_group(uuid, tag)
         groups = elastic.fetch_group_data(uuid)
-        return render(request, 'api/index.html', {'images': images, "images_upload": []},'groups': groups)
+        if tag in groups:
+            groups = [tag]
+        else:
+            groups = []
+        return render(request, 'api/index.html', {'images': images, "images_upload": [], 'groups': groups})
     else:
         return HttpResponse('Something bad happened')
 
 
 def update(request):
-    print 'ASDFLKASLDFJALSDJFLSKDJFLKDSJLFJSD;LFJ'
     group = request.GET.keys()[0]
     newname = request.GET[group]
-    print group, newname
     json_data = (group, newname)
     elastic.update_metadata(json_data)
     return HttpResponseRedirect(reverse('index'))
-    # return HttpResponse("good")

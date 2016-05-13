@@ -28,12 +28,10 @@ class ElasticSearch:
             }
         }
         response = self.conn.search(self.index_group, self.doc, body=query)
-        print response
         for resp in response['hits']['hits']:
             group_ids = resp['_source']['groups_id']
-            print group_ids, json_data
             if int(json_data[0]) in group_ids:
-                doc_update['doc']['group_name'] = [json_data[1]]
+                doc_update['doc']['group_name'] = list(set(resp['_source'].get('group_name', []) + [json_data[1]]))
                 print self.conn.update(self.index_group, self.doc, id=resp['_source']['name'], body=doc_update)
 
     def fetch_metadata(self, uuid):
