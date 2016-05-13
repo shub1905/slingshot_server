@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'allimages/$', views.list_images, name='listimages'),
     url(r'index/$', views.index, name='index'),
     url(r'search/$', views.search, name='search'),
+    url(r'update/$', views.update, name='update'),
+
 ]

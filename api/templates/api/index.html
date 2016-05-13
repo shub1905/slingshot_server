@@ -80,6 +80,31 @@
     </div>
     </div>
     </div>
+        <div class="medium-6 columns">
+        <h3>Update Group Names</h3>
+        {% for grp in groups %} 
+        <form action="../update/">
+          <a href='../search/?searchtag={{grp}}'>{{grp}}</a> <input type="text" name='{{grp}}' placeholder="update group name here"><br>
+          <input type="submit" value="Submit">
+        </form>
+
+
+
+
+
+
+
+
+        {% endfor %}
+        
+
+
+
+        </div>
+
+
+
+
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
     <script>

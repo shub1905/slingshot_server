@@ -17,7 +17,27 @@ class ElasticSearch:
         print self.conn.index(self.index, self.doc, json_data)
 
     def update_metadata(self, json_data):
-        pass
+        query = {
+            "query" : {
+                "match_all" : {}
+            }
+        }
+        doc = {
+            "doc" : {
+                "group_name" : [""]
+            }
+        }
+        response = self.conn.search(self.index_group, self.doc, body=query)
+        for resp in response['hits']['hits']:
+            group_ids = resp['_source']['groups_id']
+            if json_data[0] in group_ids:
+                doc['doc']['group_name'] = [json_data[1]]
+                print self.conn.update(self.index_group, self.doc, id=resp['name'])
+
+
+
+
+
 
     def fetch_metadata(self, uuid):
         query = {
@@ -35,6 +55,28 @@ class ElasticSearch:
             img_groups[img['name']] += img['groups_id']
 
         return img_groups
+
+    def fetch_group_data(self, uuid):
+        query = {
+            "query": {
+                "match_phrase": {
+                    "uuid": uuid
+                }
+            }
+        }
+        try:
+            response = self.conn.search(self.index_group, self.doc, body=query)
+            img_groups = defaultdict(list)
+            groups = []
+            for res in response['hits']['hits']:
+                img = res['_source']
+                # img_groups[img['name']] += img['groups_id']
+                groups += list(set(img['groups_id']))
+            groups = list(set(groups))
+
+            return groups
+        except:
+            return []    
 
     def fetch_metadata_group(self, uuid, tag):
         query = {
