@@ -1,7 +1,15 @@
 <div style="padding:40px;margin:40px;border:1px solid #ccc">
     <h1>picture</h1>
     <form action="#" method="post" enctype="multipart/form-data">
-        {% csrf_token %} {{form}} 
+        {% csrf_token %} 
+         <tr>
+         	<th>
+         		<label for="id_image">Image:</label>
+         	</th>
+         	<td>
+         		<input id="id_image" name="image" type="file" multiple/>
+         	</td>
+         </tr>
         <input type="submit" value="Upload" />
     </form>
     {% for img in images %}

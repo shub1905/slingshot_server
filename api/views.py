@@ -6,7 +6,7 @@ import tasks
 import uuid
 import json
 import os
-
+import pdb
 from uploader.models import UploadForm,Upload
 
 
@@ -62,12 +62,16 @@ def home(request):
         img = UploadForm(request.POST, request.FILES)       
         if img.is_valid():
             # img.save()  
-            save_file(request.FILES['image'], request.POST.get('uuid', 'unnamed'))
+            # print help(img)
+            # pdb.set_trace()
+            # print img.Meta
+            for imgfile in request.FILES.getlist('image'):
+                save_file(imgfile, request.POST.get('uuid', 'unnamed'))
             return HttpResponseRedirect(reverse('imageupload'))
     else:
         img=UploadForm()
     images=Upload.objects.all()
-    print "img: ", img
-    print "images: ", images
+    # print "img: ", img
+    # print "images: ", images
     return render(request,'api/home.html',{'form':img,'images':images})
 
