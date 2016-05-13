@@ -55,6 +55,6 @@ class ElasticSearch:
         for gp in groups:
             body['name'] = str(gp)
             body['groups_id'] = map(int, groups[gp])
-            print self.conn.index(self.index_group, self.doc, body)
+            print self.conn.index(self.index_group, self.doc, body, id=body['name'])
 
 elastic = ElasticSearch()
