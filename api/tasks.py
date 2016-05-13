@@ -43,7 +43,7 @@ def crop_faces(response, path):
 
     file_names = []
     for i, f in enumerate(faces):
-        pth = '{}_{}.jpg'.format(path[:-4], i)
+        pth = '{}_{}_crop.jpg'.format(path[:-4], i)
         # file_names.append({'path':pth, 'group': 'NA'})
         file_names.append(pth)
         f.save(pth, "JPEG")

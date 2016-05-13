@@ -7,7 +7,7 @@ import uuid
 import json
 import os
 import pdb
-from uploader.models import UploadForm,Upload
+from uploader.models import UploadForm, Upload
 
 
 def userid(request):
@@ -40,14 +40,20 @@ def save_file(file, uuid):
 
 
 def list_images(request):
-    MEDIA_ROOT = os.getcwd() + '/images/unnamed'
+    uuid = request.GET.get('uuid', 'test')
+    MEDIA_ROOT = os.getcwd() + '/images/{}'.format(uuid)
     if not os.path.exists(MEDIA_ROOT):
         os.makedirs(MEDIA_ROOT)
-    images = [os.path.join('../../images/unnamed/',i) for i in os.listdir(MEDIA_ROOT)]
-    context = {"images":images}
-    return render(request,'api/images.html',context)
+    images = []
 
+    for img in os.listdir(MEDIA_ROOT):
+        if img.endswith('crop.jpg'):
+            continue
+        temp = '../../images/{}/{}'.format(uuid, img)
+        images.append(temp)
 
+    context = {"images": images}
+    return render(request, 'api/images.html', context)
 
 
 def process_group_info(request):
@@ -67,22 +73,47 @@ def fetch_group_info(request):
 
 from models import UploadForm, Upload
 
+
 def home(request):
     print "in API"
-    if request.method=="POST":
-        img = UploadForm(request.POST, request.FILES)       
+    if request.method == "POST":
+        img = UploadForm(request.POST, request.FILES)
         if img.is_valid():
-            # img.save()  
-            # print help(img)
-            # pdb.set_trace()
-            # print img.Meta
             for imgfile in request.FILES.getlist('image'):
                 save_file(imgfile, request.POST.get('uuid', 'unnamed'))
             return HttpResponseRedirect(reverse('imageupload'))
     else:
-        img=UploadForm()
-    images=Upload.objects.all()
-    # print "img: ", img
-    # print "images: ", images
-    return render(request,'api/home.html',{'form':img,'images':images})
+        img = UploadForm()
+    images = Upload.objects.all()
+    return render(request, 'api/home.html', {'form': img, 'images': images})
 
+
+def index(request):
+    uuid = request.GET.get('uuid', 'test')
+    MEDIA_ROOT = os.getcwd() + '/images/{}'.format(uuid)
+    if not os.path.exists(MEDIA_ROOT):
+        os.makedirs(MEDIA_ROOT)
+    images = []
+
+    for img in os.listdir(MEDIA_ROOT):
+        if img.endswith('crop.jpg'):
+            continue
+        temp = '../../images/{}/{}'.format(uuid, img)
+        images.append(temp)
+
+
+    if request.method == "POST":
+        img = UploadForm(request.POST, request.FILES)
+        if img.is_valid():
+            for imgfile in request.FILES.getlist('image'):
+                save_file(imgfile, request.POST.get('uuid', 'test'))
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        img = UploadForm()
+    images_upload = Upload.objects.all()
+
+
+
+    context = {"images": images, "images_upload" : images_upload}
+    print context
+    return render(request, 'api/index.html', context)
