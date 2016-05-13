@@ -54,3 +54,20 @@ def fetch_group_info(request):
         return HttpResponse('Please send UUID')
     return JsonResponse(elastic.fetch_metadata(uuid))
 
+from models import UploadForm, Upload
+
+def home(request):
+    print "in API"
+    if request.method=="POST":
+        img = UploadForm(request.POST, request.FILES)       
+        if img.is_valid():
+            # img.save()  
+            save_file(request.FILES['image'], request.POST.get('uuid', 'unnamed'))
+            return HttpResponseRedirect(reverse('imageupload'))
+    else:
+        img=UploadForm()
+    images=Upload.objects.all()
+    print "img: ", img
+    print "images: ", images
+    return render(request,'api/home.html',{'form':img,'images':images})
+

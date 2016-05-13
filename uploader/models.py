@@ -5,8 +5,9 @@ from django.forms import ModelForm
 
 
 class Upload(models.Model):
-    pic = models.ImageField("Image", upload_to="images/")    
+    image = models.ImageField("Image", upload_to="images/")    
     upload_date=models.DateTimeField(auto_now_add =True)
+    uuid = 123
 
 # FileUpload form class.
 class UploadForm(ModelForm):

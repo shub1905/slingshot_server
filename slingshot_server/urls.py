@@ -21,5 +21,5 @@ from django.conf import settings
 urlpatterns = [
 	url(r'^api/', include('api.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^upload/$', 'uploader.views.home', name='imageupload'),
+    # url(r'^upload/$', 'uploader.views.home', name='imageupload'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
