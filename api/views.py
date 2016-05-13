@@ -74,18 +74,18 @@ def fetch_group_info(request):
 from models import UploadForm, Upload
 
 
-def home(request):
-    print "in API"
-    if request.method == "POST":
-        img = UploadForm(request.POST, request.FILES)
-        if img.is_valid():
-            for imgfile in request.FILES.getlist('image'):
-                save_file(imgfile, request.POST.get('uuid', 'unnamed'))
-            return HttpResponseRedirect(reverse('imageupload'))
-    else:
-        img = UploadForm()
-    images = Upload.objects.all()
-    return render(request, 'api/home.html', {'form': img, 'images': images})
+# def home(request):
+#     print "in API"
+#     if request.method == "POST":
+#         img = UploadForm(request.POST, request.FILES)
+#         if img.is_valid():
+#             for imgfile in request.FILES.getlist('image'):
+#                 save_file(imgfile, request.POST.get('uuid', 'unnamed'))
+#             return HttpResponseRedirect(reverse('imageupload'))
+#     else:
+#         img = UploadForm()
+#     images = Upload.objects.all()
+#     return render(request, 'api/home.html', {'form': img, 'images': images})
 
 
 def index(request):
@@ -101,7 +101,6 @@ def index(request):
         temp = '../../images/{}/{}'.format(uuid, img)
         images.append(temp)
 
-
     if request.method == "POST":
         img = UploadForm(request.POST, request.FILES)
         if img.is_valid():
@@ -112,8 +111,18 @@ def index(request):
         img = UploadForm()
     images_upload = Upload.objects.all()
 
-
-
-    context = {"images": images, "images_upload" : images_upload}
+    context = {"images": images, "images_upload": images_upload}
     print context
     return render(request, 'api/index.html', context)
+
+
+def search(request):
+    print "searching.."
+    if request.method == "GET":
+        uuid = request.GET.get('uuid', 'test')
+        tag = request.GET.get('searchtag', 0)
+        print tag, type(tag)
+        images = elastic.fetch_metadata_group(uuid, int(tag))
+        return render(request, 'api/index.html', {'images': images, "images_upload": []})
+    else:
+        return HttpResponse('Something bad happened')

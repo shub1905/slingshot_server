@@ -36,6 +36,38 @@ class ElasticSearch:
 
         return img_groups
 
+    def fetch_metadata_group(self, uuid, tag):
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "term": {
+                                "uuid": {
+                                    "value": uuid
+                                }
+                            }
+                        },
+                        {
+                            "term": {
+                                "groups_id": {
+                                    "value": tag
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+        response = self.conn.search(self.index_group, self.doc, body=query)
+        img_list = []
+
+        for res in response['hits']['hits']:
+            img = res['_source']
+            img_list.append('../../images/{}/{}'.format(uuid, img['name']))
+
+        return img_list
+
     def fetch_all_images(self, uuid):
         query = {
             "query": {
