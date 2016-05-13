@@ -36,7 +36,7 @@ def crop_faces(response, path):
     faces = []
     for img_attr in response['imageFaces']:
         att = [img_attr['positionX'], img_attr['positionY'], img_attr['height'],  img_attr['width']]
-        att = map(float, att)
+        att = map(int, att)
         box = (att[0], att[1], att[0] + att[2], att[1] + att[3])
         region = im.crop(box).resize((100, 100))
         faces.append(region)

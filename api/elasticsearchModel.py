@@ -18,26 +18,23 @@ class ElasticSearch:
 
     def update_metadata(self, json_data):
         query = {
-            "query" : {
-                "match_all" : {}
+            "query": {
+                "match_all": {}
             }
         }
-        doc = {
-            "doc" : {
-                "group_name" : [""]
+        doc_update = {
+            "doc": {
+                "group_name": [""]
             }
         }
         response = self.conn.search(self.index_group, self.doc, body=query)
+        print response
         for resp in response['hits']['hits']:
             group_ids = resp['_source']['groups_id']
-            if json_data[0] in group_ids:
-                doc['doc']['group_name'] = [json_data[1]]
-                print self.conn.update(self.index_group, self.doc, id=resp['name'])
-
-
-
-
-
+            print group_ids, json_data
+            if int(json_data[0]) in group_ids:
+                doc_update['doc']['group_name'] = [json_data[1]]
+                print self.conn.update(self.index_group, self.doc, id=resp['_source']['name'], body=doc_update)
 
     def fetch_metadata(self, uuid):
         query = {
@@ -76,28 +73,13 @@ class ElasticSearch:
 
             return groups
         except:
-            return []    
+            return []
 
     def fetch_metadata_group(self, uuid, tag):
         query = {
             "query": {
-                "bool": {
-                    "must": [
-                        {
-                            "term": {
-                                "uuid": {
-                                    "value": uuid
-                                }
-                            }
-                        },
-                        {
-                            "term": {
-                                "groups_id": {
-                                    "value": tag
-                                }
-                            }
-                        }
-                    ]
+                "match_phrase": {
+                    "uuid": uuid
                 }
             }
         }
@@ -106,7 +88,8 @@ class ElasticSearch:
 
         for res in response['hits']['hits']:
             img = res['_source']
-            img_list.append('../../images/{}/{}'.format(uuid, img['name']))
+            if tag in img.get('groups_id', []) + img.get('group_name', []):
+                img_list.append('../../images/{}/{}'.format(uuid, img['name']))
 
         return img_list
 
