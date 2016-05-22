@@ -18,6 +18,7 @@ class ElasticSearch:
 
     def update_metadata(self, json_data):
         query = {
+            "size": 2000, 
             "query": {
                 "match_all": {}
             }
@@ -36,6 +37,7 @@ class ElasticSearch:
 
     def fetch_metadata(self, uuid):
         query = {
+            "size": 2000, 
             "query": {
                 "match_phrase": {
                     "uuid": uuid
@@ -53,6 +55,7 @@ class ElasticSearch:
 
     def fetch_group_data(self, uuid):
         query = {
+            "size": 2000, 
             "query": {
                 "match_phrase": {
                     "uuid": uuid
@@ -75,6 +78,7 @@ class ElasticSearch:
 
     def fetch_metadata_group(self, uuid, tag):
         query = {
+            "size": 2000, 
             "query": {
                 "match_phrase": {
                     "uuid": uuid
@@ -93,6 +97,7 @@ class ElasticSearch:
 
     def fetch_all_images(self, uuid):
         query = {
+            "size": 2000, 
             "query": {
                 "match_phrase": {
                     "uuid": uuid

@@ -112,6 +112,7 @@ def index(request):
     images_upload = Upload.objects.all()
 
     groups = elastic.fetch_group_data(uuid)
+    print groups
 
     context = {"images": images, "images_upload": images_upload, 'groups': groups}
     return render(request, 'api/index.html', context)

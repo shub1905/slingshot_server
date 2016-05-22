@@ -5,7 +5,7 @@ from collections import defaultdict
 class Clustering:
 
     def __init__(self):
-        self.n_clusters = 5
+        self.n_clusters = 4
         self.km = KMeans(n_clusters=self.n_clusters, n_jobs=-1)
 
     def cluster(self, X, names):

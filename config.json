@@ -1,6 +1,6 @@
 {
 	"elasticsearch" : {
-		"host" : "https://search-slingshot-cloud-ayh3w3f7mzwszxmelrupsnwa6q.us-east-1.es.amazonaws.com",
+		"host" : "http://127.0.0.1:9200",
 		"port" : 443,
 		"index" : "image_data",
 		"doc" : "metadata",

@@ -12,8 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
     <link href='http://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet' type='text/css'>
-<link rel="shortcut icon" type="image/png" href="../../static/favicon.ico"/>
-
+    <link rel="shortcut icon" type="image/png" href="../../static/favicon.ico" />
 </head>
 
 <body>
@@ -22,7 +21,7 @@
             <div class="off-canvas position-left reveal-for-large" id="my-info" data-off-canvas data-position="left">
                 <div class="row column">
                     <br>
-                    <img class="thumbnail" src="../../static/logo.jpg">
+                    <img class="thumbnail" src="../../images/calm-in-the-storm.jpg">
                     <h5>Test User</h5>
                     <p>User Profile Page for Slingshot App. Let's go exploring.</p>
                     <hr>
@@ -86,31 +85,17 @@
     </div>
     </div>
     </div>
-        <div class="medium-6 columns">
-        <h3>Update Group Names</h3>
-        {% for grp in groups %} 
+    <div class="medium-6 columns">
+        {% if groups %}
+        <h3>Update Group Names</h3> {% endif %} {% for grp in groups %}
         <form action="../update/">
-          <a href='../search/?searchtag={{grp}}'>{{grp}}</a> <input type="text" name='{{grp}}' placeholder="update group name here"><br>
-          <input type="submit" value="Submit">
+            <a href='../search/?searchtag={{grp}}'>{{grp}}</a>
+            <input type="text" name='{{grp}}' placeholder="update group name here">
+            <br>
+            <input type="submit" value="Submit">
         </form>
-
-
-
-
-
-
-
-
         {% endfor %}
-        
-
-
-
-        </div>
-
-
-
-
+    </div>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
     <script>

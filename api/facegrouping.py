@@ -20,8 +20,9 @@ def extract_X(uuid):
         im = numpy.array(im).flatten()
         X[i, :] = im
 
-    X_red = pca_model.dim_reduction(X)
-    return X_red, img_names
+    # X_red = pca_model.dim_reduction(X)
+    print X.shape
+    return X, img_names
 
 
 def group_pics(uuid):
