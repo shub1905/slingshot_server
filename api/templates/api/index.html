@@ -89,10 +89,11 @@
         {% if groups %}
         <h3>Update Group Names</h3> {% endif %} {% for grp in groups %}
         <form action="../update/">
+            <br>
             <a href='../search/?searchtag={{grp}}'>{{grp}}</a>
             <input type="text" name='{{grp}}' placeholder="update group name here">
-            <br>
             <input type="submit" value="Submit">
+            <br>
         </form>
         {% endfor %}
     </div>
